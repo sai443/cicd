@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="77c6ba13-2490-43e2-81a8-b6cee7c51a73" >
+		<file:connection workingDir="C:\Users\ULTIMOSOFT-4\Desktop\citispace" />
+	</file:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="ebba5691-7b70-4a12-98f8-fccef04c76b2" file="dev.properties" />
+	<flow name="dataFlow1" doc:id="a87424c8-c395-4d7f-8f00-38f1ea237d0c" >
+		<file:listener doc:name="On New or Updated File" doc:id="a7573b31-bbb6-4ab3-84b7-739289c67959" config-ref="File_Config">
+			<scheduling-strategy >
+				<fixed-frequency timeUnit="SECONDS" />
+			</scheduling-strategy>
+		</file:listener>
+		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="47c91c1e-b3eb-4adc-b1f2-91e7b64bcf75" variableName="data"/>
+		<logger level="INFO" doc:name="Logger" doc:id="78ec23f0-2f8e-41af-b1f4-a2aa0c025dda" message="#[payload.name]"/>
+		<ee:transform doc:name="Transform Message" doc:id="31d01891-4efa-4e80-a54b-93a59ed30c9d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json 
+---
+payload map(item,index)->
+ if (item.name == p('con'))
+  {
+value:"1"
+} 
+else ""
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="97d424a5-c8ea-4226-85a2-65ba9a2c1af9" message="#[payload]"/>
+	</flow>
+</mule>

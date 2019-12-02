@@ -15,6 +15,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 				<fixed-frequency timeUnit="SECONDS" />
 			</scheduling-strategy>
 		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="0ec16beb-32a2-40e8-90d9-7e1084af9bf4" message="incoming"/>
 		<set-variable value="#[payload]" doc:name="Set Variable" doc:id="47c91c1e-b3eb-4adc-b1f2-91e7b64bcf75" variableName="data"/>
 		<logger level="INFO" doc:name="Logger" doc:id="78ec23f0-2f8e-41af-b1f4-a2aa0c025dda" message="#[payload.name]"/>
 		<ee:transform doc:name="Transform Message" doc:id="31d01891-4efa-4e80-a54b-93a59ed30c9d" >
